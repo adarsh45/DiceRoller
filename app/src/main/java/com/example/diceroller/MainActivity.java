@@ -4,6 +4,8 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,13 +33,42 @@ public class MainActivity extends AppCompatActivity {
         rollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int random_1 = random.nextInt(6) + 1;
-                rollDice(random_1, firstDice);
 
-                int random_2 = random.nextInt(6) + 1;
-                rollDice(random_2, secondDice);
+                final Animation anim1 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake);
+                final Animation anim2 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake);
+
+                final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        int random_1 = random.nextInt(6) + 1;
+                        rollDice(random_1, firstDice);
+
+                        int random_2 = random.nextInt(6) + 1;
+                        rollDice(random_2, secondDice);
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                };
+
+
+                anim1.setAnimationListener(animationListener);
+                anim2.setAnimationListener(animationListener);
+
+                firstDice.startAnimation(anim1);
+                secondDice.startAnimation(anim2);
 
                 mp.start();
+
             }
         });
 
